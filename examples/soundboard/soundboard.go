@@ -15,7 +15,7 @@ import (
 	"strings"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/rylio/ytdl"
+	"github.com/Andreychik32/ytdl"
 
 	"github.com/jonas747/dca"
 
