@@ -1,7 +1,6 @@
 package disgordrouter
 
 import (
-	"context"
 	"fmt"
 	"sync"
 
@@ -42,13 +41,24 @@ func (c *Context) Get(key string) interface{} {
 
 // Reply replies to the sender with the given message
 func (c *Context) Reply(args ...interface{}) (*disgord.Message, error) {
-	return c.Ses.SendMsg(context.Background(), c.Msg.ChannelID, fmt.Sprint(args...))
+	/*
+	channel, err := c.Ses.Channel(c.Msg.ChannelID).Get()
+	if err != nil {
+		return nil, err
+	}
+
+	return channel.SendMsgString(context.Background(), c.Ses, fmt.Sprint(args...))
+	*/
+	// MEGAHACK -- Was CreateMessage, verify correctness.
+	return c.Ses.SendMsg(c.Msg.ChannelID, &disgord.CreateMessageParams{
+		Content: fmt.Sprint(args...),
+	})
 }
 
 // ReplyEmbed replies to the sender with an embed
 func (c *Context) ReplyEmbed(args ...interface{}) (*disgord.Message, error) {
 	// MEGAHACK -- Was CreateMessage, verify correctness.
-	return c.Ses.SendMsg(context.Background(), c.Msg.ChannelID, &disgord.CreateMessageParams{
+	return c.Ses.SendMsg(c.Msg.ChannelID, &disgord.CreateMessageParams{
 		Embed: &disgord.Embed{
 			Description: fmt.Sprint(args...),
 		},
